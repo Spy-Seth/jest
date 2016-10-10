@@ -289,16 +289,22 @@ const matchers: MatchersObject = {
     return {message, pass};
   },
 
-  toContain(collection: Array<any> | string, value: any) {
+  toContain(collection: Array<any> | Set<any> | string, value: any) {
     const collectionType = getType(collection);
-    if (!Array.isArray(collection) && typeof collection !== 'string') {
+    if (!Array.isArray(collection) && typeof collection !== 'string' && !(collection instanceof Set)) {
       throw new Error(
-        `.toContain() only works with arrays and strings.\n` +
+        `.toContain() only works with arrays, Set and strings.\n` +
         printWithType('Received', collection, printReceived),
       );
     }
 
-    const pass = collection.indexOf(value) != -1;
+    let pass;
+    if (collection instanceof Set) {
+      pass = collection.has(value);
+    } else {
+      pass = collection.indexOf(value) != -1;
+    }
+
     const message = pass
       ? () => matcherHint('.not.toContain', collectionType, 'value') + '\n\n' +
         `Expected ${collectionType}:\n` +

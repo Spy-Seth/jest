@@ -303,6 +303,7 @@ describe('.toContain()', () => {
     [[Symbol.for('a')], Symbol.for('a')],
     ['abcdef', 'abc'],
     ['11112111', '2'],
+    [new Set(['a', 'b', 'c', 'd']), 'a'],
   ].forEach(([list, v]) => {
     it(`'${stringify(list)}' contains '${stringify(v)}'`, () => {
       jestExpect(list).toContain(v);
@@ -317,6 +318,7 @@ describe('.toContain()', () => {
     [[null, undefined], 1],
     [[{}, []], []],
     [[{}, []], {}],
+    [new Set(['a', 'b', 'c', 'd']), 'e'],
   ].forEach(([list, v]) => {
     it(`'${stringify(list)}' does not contain '${stringify(v)}'`, () => {
       jestExpect(list).not.toContain(v);
